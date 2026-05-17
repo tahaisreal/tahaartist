@@ -1,0 +1,31 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model YoutubeVideo {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  youtubeId   String   @unique
+  order       Int      @default(0)
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model MotionDesign {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  filename    String
+  thumbnail   String?
+  order       Int      @default(0)
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
