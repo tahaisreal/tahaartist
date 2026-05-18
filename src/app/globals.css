@@ -294,15 +294,19 @@ body {
 /* ─── YOUTUBE LIST ROW ─── */
 .yt-row {
   display: grid;
-  grid-template-columns: 80px 1fr 80px 110px;
+  grid-template-columns: 72px 1fr;   /* mobile: thumbnail + title only */
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   padding: 10px 0;
   border-bottom: 1px solid var(--border);
   cursor: none;
   transition: background 0.2s ease, padding-left 0.3s ease;
 }
 .yt-row:hover { background: rgba(200,164,90,0.04); padding-left: 8px; }
+
+@media (min-width: 640px) {
+  .yt-row { grid-template-columns: 80px 1fr 80px 110px; gap: 16px; }
+}
 
 /* thumbnail cell */
 .yt-thumb {

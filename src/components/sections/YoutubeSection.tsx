@@ -64,12 +64,11 @@ export default function YoutubeSection({ videos }: Props) {
           ) : (
             <div className="border-t border-border">
               {/* Header row */}
-              <div className="grid gap-4 py-3 border-b border-border"
-                style={{ gridTemplateColumns: '80px 1fr 80px 110px' }}>
+              <div className="yt-row py-3 border-b border-border !padding-left-0 pointer-events-none">
                 <span className="timecode text-[9px] opacity-30">PREVIEW</span>
                 <span className="timecode text-[9px] opacity-30">TITLE</span>
-                <span className="timecode text-[9px] opacity-30 text-right">TYPE</span>
-                <span className="timecode text-[9px] opacity-30 text-right">ID</span>
+                <span className="timecode text-[9px] opacity-30 text-right hidden sm:block">TYPE</span>
+                <span className="timecode text-[9px] opacity-30 text-right hidden sm:block">ID</span>
               </div>
               {videos.map((video, i) => (
                 <YoutubeRow
@@ -130,8 +129,8 @@ function YoutubeRow({ video, index, isActive, onSelect }: {
         )}
       </div>
 
-      <p className="timecode text-[9px] opacity-40 text-right self-center">YOUTUBE</p>
-      <p className="timecode text-[9px] opacity-30 text-right self-center truncate">{video.youtubeId}</p>
+      <p className="timecode text-[9px] opacity-40 text-right self-center hidden sm:block">YOUTUBE</p>
+      <p className="timecode text-[9px] opacity-30 text-right self-center truncate hidden sm:block">{video.youtubeId}</p>
     </div>
   );
 }
