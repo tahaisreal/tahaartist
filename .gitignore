@@ -25,5 +25,5 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
-# Uploads (videos) — do NOT commit large files
-public/uploads/
+# Database
+*.db-journal
