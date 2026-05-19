@@ -50,19 +50,20 @@ export default function MotionSection({ motions }: Props) {
 }
 
 function MotionCard({ motion, index }: { motion: MotionDesign; index: number }) {
-  const cardRef  = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const cardRef     = useRef<HTMLDivElement>(null);
+  const videoRef    = useRef<HTMLVideoElement>(null);
+  const hoveredRef  = useRef(false);           // ref avoids stale closure in event handlers
   const [hovered,     setHovered]     = useState(false);
   const [posterReady, setPosterReady] = useState(false);
 
-  // ── Lazy-load src when card enters viewport ─────────────────────────────
+  // ── Lazy-load src when card is near viewport ────────────────────────────
   useEffect(() => {
     const card  = cardRef.current;
     const video = videoRef.current;
     if (!card || !video) return;
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting && !video.src) video.src = `/uploads/${motion.filename}`; },
-      { rootMargin: '400px' }
+      { rootMargin: '600px' }
     );
     obs.observe(card);
     return () => obs.disconnect();
@@ -76,25 +77,26 @@ function MotionCard({ motion, index }: { motion: MotionDesign; index: number }) 
   };
 
   const handleSeeked = () => {
-    // Only mark poster ready on non-playing seeks (initial poster setup or post-hover restore)
-    if (!hovered) setPosterReady(true);
+    // Use ref (not state) to check hovered — avoids stale closure bug
+    if (!hoveredRef.current) setPosterReady(true);
   };
 
   // ── Hover: play from start / leave: pause and restore poster ────────────
   const onEnter = () => {
+    hoveredRef.current = true;
     setHovered(true);
     const video = videoRef.current;
     if (!video) return;
-    video.currentTime = 0; // always start from beginning
+    video.currentTime = 0;
     video.play().catch(() => {});
   };
 
   const onLeave = () => {
+    hoveredRef.current = false;
     setHovered(false);
     const video = videoRef.current;
     if (!video) return;
     video.pause();
-    // Restore mid-frame poster
     if (video.duration && isFinite(video.duration)) {
       video.currentTime = video.duration * 0.5;
     }
@@ -136,7 +138,7 @@ function MotionCard({ motion, index }: { motion: MotionDesign; index: number }) 
       <video
         ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover"
-        muted loop playsInline preload="metadata"
+        muted loop playsInline preload="auto"
         onLoadedMetadata={handleLoadedMetadata}
         onSeeked={handleSeeked}
         style={{

@@ -12,8 +12,8 @@ export default function HomePage() {
     <main>
       <HeroSection projectCount={youtubeVideos.length + motionDesigns.length} />
       <ClientsSection />
-      <YoutubeSection videos={youtubeVideos} />
       <MotionSection  motions={motionDesigns} />
+      <YoutubeSection videos={youtubeVideos} />
       <AboutSection />
       <ContactSection />
     </main>
