@@ -38,7 +38,7 @@ export default function Nav() {
   if (isAdmin) return null;
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'nav-glass' : 'bg-transparent'}`}>
+    <header className="fixed top-0 left-0 right-0 z-50 nav-glass transition-all duration-500">
       <div className="flex items-center justify-between px-6 md:px-10 h-14">
 
         {/* Brand + REC */}

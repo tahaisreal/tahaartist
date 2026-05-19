@@ -267,6 +267,27 @@ body {
 .project-card:hover::after { opacity: 1; }
 .project-card:hover { border-color: var(--red); }
 
+/* ─── CLIENTS MARQUEE ─── */
+@keyframes clients-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.clients-track {
+  animation: clients-scroll 35s linear infinite;
+  width: max-content;
+}
+.clients-track:hover { animation-play-state: paused; }
+
+.clients-card {
+  width: 110px;
+  padding: 20px 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: default;
+  transition: border-color 0.3s, background 0.3s;
+}
+.clients-card:hover { border-color: var(--red); background: var(--bg); }
+
 /* ─── MOTION CARD — audio-wave playing indicator ─── */
 @keyframes motion-wave {
   0%, 100% { height: 3px;  }
