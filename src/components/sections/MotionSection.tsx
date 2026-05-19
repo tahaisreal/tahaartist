@@ -50,9 +50,10 @@ export default function MotionSection({ motions }: Props) {
 }
 
 function MotionCard({ motion, index }: { motion: MotionDesign; index: number }) {
-  const cardRef     = useRef<HTMLDivElement>(null);
-  const videoRef    = useRef<HTMLVideoElement>(null);
-  const hoveredRef  = useRef(false);           // ref avoids stale closure in event handlers
+  const cardRef       = useRef<HTMLDivElement>(null);
+  const videoRef      = useRef<HTMLVideoElement>(null);
+  const hoveredRef    = useRef(false);
+  const seekDoneRef   = useRef(false);   // prevent double-seek
   const [hovered,     setHovered]     = useState(false);
   const [posterReady, setPosterReady] = useState(false);
 
@@ -63,21 +64,26 @@ function MotionCard({ motion, index }: { motion: MotionDesign; index: number }) 
     if (!card || !video) return;
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting && !video.src) video.src = `/uploads/${motion.filename}`; },
-      { rootMargin: '600px' }
+      { rootMargin: '400px' }
     );
     obs.observe(card);
     return () => obs.disconnect();
   }, [motion.filename]);
 
-  // ── Seek to midpoint once metadata loads → acts as natural poster ────────
-  const handleLoadedMetadata = () => {
+  // ── canplay fires when the browser has buffered enough to display a frame ─
+  const handleCanPlay = () => {
     const video = videoRef.current;
-    if (!video || !video.duration || !isFinite(video.duration)) return;
-    video.currentTime = video.duration * 0.5;
+    if (!video || hoveredRef.current || seekDoneRef.current) return;
+    seekDoneRef.current = true;
+    if (video.duration && isFinite(video.duration)) {
+      video.currentTime = video.duration * 0.5;
+    } else {
+      // No duration yet → just show first frame
+      setPosterReady(true);
+    }
   };
 
   const handleSeeked = () => {
-    // Use ref (not state) to check hovered — avoids stale closure bug
     if (!hoveredRef.current) setPosterReady(true);
   };
 
@@ -139,7 +145,7 @@ function MotionCard({ motion, index }: { motion: MotionDesign; index: number }) 
         ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover"
         muted loop playsInline preload="auto"
-        onLoadedMetadata={handleLoadedMetadata}
+        onCanPlay={handleCanPlay}
         onSeeked={handleSeeked}
         style={{
           opacity: hovered ? 1 : posterReady ? 0.9 : 0,
