@@ -50,14 +50,14 @@ export default function MotionSection({ motions }: Props) {
 }
 
 function MotionCard({ motion, index }: { motion: MotionDesign; index: number }) {
-  const cardRef       = useRef<HTMLDivElement>(null);
-  const videoRef      = useRef<HTMLVideoElement>(null);
-  const hoveredRef    = useRef(false);
-  const seekDoneRef   = useRef(false);   // prevent double-seek
-  const [hovered,     setHovered]     = useState(false);
-  const [posterReady, setPosterReady] = useState(false);
+  const cardRef     = useRef<HTMLDivElement>(null);
+  const videoRef    = useRef<HTMLVideoElement>(null);
+  const hoveredRef  = useRef(false);
+  const seekDoneRef = useRef(false);
+  const [hovered,   setHovered]  = useState(false);
+  const [poster,    setPoster]   = useState<string | null>(null); // canvas data URL
 
-  // ── Lazy-load src when card is near viewport ────────────────────────────
+  // ── Lazy-load src when card is near viewport ──────────────────────────
   useEffect(() => {
     const card  = cardRef.current;
     const video = videoRef.current;
@@ -70,7 +70,23 @@ function MotionCard({ motion, index }: { motion: MotionDesign; index: number }) 
     return () => obs.disconnect();
   }, [motion.filename]);
 
-  // ── canplay fires when the browser has buffered enough to display a frame ─
+  // ── Capture current frame to canvas → reliable static preview ────────
+  const captureFrame = () => {
+    const video = videoRef.current;
+    if (!video || video.readyState < 2) return;
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width  = video.videoWidth  || 640;
+      canvas.height = video.videoHeight || 360;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        setPoster(canvas.toDataURL('image/jpeg', 0.85));
+      }
+    } catch { /* ignore */ }
+  };
+
+  // ── canplay: seek to midframe for a more interesting preview ─────────
   const handleCanPlay = () => {
     const video = videoRef.current;
     if (!video || hoveredRef.current || seekDoneRef.current) return;
@@ -78,16 +94,16 @@ function MotionCard({ motion, index }: { motion: MotionDesign; index: number }) 
     if (video.duration && isFinite(video.duration)) {
       video.currentTime = video.duration * 0.5;
     } else {
-      // No duration yet → just show first frame
-      setPosterReady(true);
+      captureFrame(); // no duration → capture whatever is loaded
     }
   };
 
+  // ── seeked: frame is decoded, capture it ─────────────────────────────
   const handleSeeked = () => {
-    if (!hoveredRef.current) setPosterReady(true);
+    if (!hoveredRef.current) captureFrame();
   };
 
-  // ── Hover: play from start / leave: pause and restore poster ────────────
+  // ── Hover: play from start / leave: restore poster ───────────────────
   const onEnter = () => {
     hoveredRef.current = true;
     setHovered(true);
@@ -105,6 +121,7 @@ function MotionCard({ motion, index }: { motion: MotionDesign; index: number }) 
     video.pause();
     if (video.duration && isFinite(video.duration)) {
       video.currentTime = video.duration * 0.5;
+      // handleSeeked will re-capture the midframe
     }
   };
 
@@ -130,17 +147,18 @@ function MotionCard({ motion, index }: { motion: MotionDesign; index: number }) 
       onMouseMove={onMouseMove}
       style={{ transition: 'transform 0.15s ease, border-color 0.3s' }}
     >
-      {/* Static thumbnail fallback (before video metadata loads) */}
-      {motion.thumbnail && !posterReady && !hovered && (
+      {/* Canvas-captured poster — shows a real frame from the video */}
+      {poster && !hovered && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={`/uploads/${motion.thumbnail}`}
-          alt={motion.title}
+          src={poster}
+          alt=""
           className="absolute inset-0 w-full h-full object-cover"
+          style={{ opacity: 0.9, transition: 'opacity 0.35s ease' }}
         />
       )}
 
-      {/* Video — mid-frame poster when idle, plays from 0 on hover */}
+      {/* Video — hidden until hover, then plays from start */}
       <video
         ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover"
@@ -148,7 +166,7 @@ function MotionCard({ motion, index }: { motion: MotionDesign; index: number }) 
         onCanPlay={handleCanPlay}
         onSeeked={handleSeeked}
         style={{
-          opacity: hovered ? 1 : posterReady ? 0.9 : 0,
+          opacity: hovered ? 1 : 0,
           transition: 'opacity 0.35s ease',
         }}
       />
