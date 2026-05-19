@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -25,7 +23,7 @@ html {
 body {
   background: var(--bg);
   color: var(--white);
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-syne), sans-serif;
   cursor: none;
   overflow-x: hidden;
 }
@@ -137,7 +135,7 @@ body {
 
 /* ─── TIMECODE ─── */
 .timecode {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-space-mono), monospace;
   font-size: 10px;
   letter-spacing: 0.08em;
   color: var(--dim);
@@ -145,7 +143,7 @@ body {
 
 /* ─── SECTION LABEL ─── */
 .section-label {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-space-mono), monospace;
   font-size: 9px;
   letter-spacing: 0.35em;
   text-transform: uppercase;
@@ -190,7 +188,7 @@ body {
   position: relative; overflow: hidden;
   border: 1px solid var(--red);
   color: var(--red);
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-space-mono), monospace;
   font-size: 10px;
   letter-spacing: 0.25em;
   text-transform: uppercase;
@@ -213,7 +211,7 @@ body {
 .btn-ghost {
   border: 1px solid rgba(238,238,238,0.15);
   color: rgba(238,238,238,0.5);
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-space-mono), monospace;
   font-size: 10px;
   letter-spacing: 0.25em;
   text-transform: uppercase;
@@ -361,7 +359,7 @@ body {
   border: 1px solid #242424;
   color: #EEEEEE;
   padding: 10px 14px;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-space-mono), monospace;
   font-size: 13px;
   width: 100%;
   outline: none;

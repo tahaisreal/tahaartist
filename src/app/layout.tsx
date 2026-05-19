@@ -1,6 +1,22 @@
 import type { Metadata } from 'next';
+import { Syne, Space_Mono } from 'next/font/google';
 import './globals.css';
 import ClientShell from '@/components/ClientShell';
+
+const syne = Syne({
+  subsets: ['latin'],
+  weight: ['400', '600', '700', '800'],
+  variable: '--font-syne',
+  display: 'swap',
+});
+
+const spaceMono = Space_Mono({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-space-mono',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Taha — Monteur Vidéo & Motion Designer',
@@ -14,7 +30,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr">
+    <html lang="fr" className={`${syne.variable} ${spaceMono.variable}`}>
       <body>
         <ClientShell>{children}</ClientShell>
       </body>
