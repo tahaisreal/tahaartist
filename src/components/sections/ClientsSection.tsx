@@ -2,15 +2,15 @@
 import RevealOnScroll from '@/components/RevealOnScroll';
 
 const CLIENTS = [
-  { name: 'DavidLafargePokemon', subs: '2,04 M',   img: 'https://framerusercontent.com/images/cG0XV4PojM4AcYkheqjqYe12i84.jpg?width=160&height=160' },
-  { name: 'GotagaTV',            subs: '2,54 M',   img: 'https://framerusercontent.com/images/bhLZDHTb8b7pj1gm3s4FT1xRsw.jpg?width=160&height=160' },
-  { name: 'Baggy Dessine',       subs: '1,93 M',   img: 'https://framerusercontent.com/images/xIDsyYSWmC0WUVTtL2dO9Z6J0VM.jpg?width=160&height=160' },
-  { name: 'Cossi',               subs: '1,5 M',    img: 'https://framerusercontent.com/images/DKoQ0GIvWG184cVWezPGp03MWok.jpg?width=160&height=160' },
-  { name: 'Multicort',           subs: '1,11 M',   img: 'https://framerusercontent.com/images/eamR6pqT1jd0i2gEW3mjBerzFc.jpg?width=160&height=160' },
-  { name: 'Camille LV',          subs: '714 K',    img: 'https://framerusercontent.com/images/6JpSkhHioZpZrDLlGir6rpi6RA.jpg?width=160&height=160' },
-  { name: 'Leti',                subs: '697 K',    img: 'https://framerusercontent.com/images/c2AuQYgCsQwCqEwtVqfnO3JvDHM.jpg?width=160&height=160' },
-  { name: 'Evan',                subs: '600 K',    img: 'https://framerusercontent.com/images/BpBjqM5LwEL3Y7GfvkIvxfhUUjk.jpg?width=160&height=160' },
-  { name: 'BeonePourcent',       subs: '542 K',    img: 'https://framerusercontent.com/images/7v1VOsT6H0GudXeobUmplSrFSeo.jpg?width=160&height=160' },
+  { name: 'David Lafarge',  subs: '2,04 M',   img: 'https://framerusercontent.com/images/cG0XV4PojM4AcYkheqjqYe12i84.jpg?width=160&height=160' },
+  { name: 'GotagaTV',      subs: '2,54 M',   img: 'https://framerusercontent.com/images/bhLZDHTb8b7pj1gm3s4FT1xRsw.jpg?width=160&height=160' },
+  { name: 'Baggy Dessine', subs: '1,93 M',   img: 'https://framerusercontent.com/images/xIDsyYSWmC0WUVTtL2dO9Z6J0VM.jpg?width=160&height=160' },
+  { name: 'Cossi',         subs: '1,5 M',    img: 'https://framerusercontent.com/images/DKoQ0GIvWG184cVWezPGp03MWok.jpg?width=160&height=160' },
+  { name: 'Multicort',     subs: '1,11 M',   img: 'https://framerusercontent.com/images/eamR6pqT1jd0i2gEW3mjBerzFc.jpg?width=160&height=160' },
+  { name: 'Camille LV',   subs: '714 K',    img: 'https://framerusercontent.com/images/6JpSkhHioZpZrDLlGir6rpi6RA.jpg?width=160&height=160' },
+  { name: 'Leti',          subs: '697 K',    img: 'https://framerusercontent.com/images/c2AuQYgCsQwCqEwtVqfnO3JvDHM.jpg?width=160&height=160' },
+  { name: 'Evan',          subs: '600 K',    img: 'https://framerusercontent.com/images/BpBjqM5LwEL3Y7GfvkIvxfhUUjk.jpg?width=160&height=160' },
+  { name: 'Beone%',        subs: '542 K',    img: 'https://framerusercontent.com/images/7v1VOsT6H0GudXeobUmplSrFSeo.jpg?width=160&height=160' },
 ];
 
 export default function ClientsSection() {
@@ -89,11 +89,11 @@ function ClientCard({ client }: { client: typeof CLIENTS[0] }) {
 
       {/* Name */}
       <div className="text-center">
-        <p className="font-display font-black text-white text-sm leading-tight
-                      group-hover:text-red transition-colors duration-300 whitespace-nowrap">
+        <p className="font-display font-black text-white text-sm leading-tight text-center
+                      group-hover:text-red transition-colors duration-300 break-words w-full">
           {client.name}
         </p>
-        <p className="timecode text-[9px] opacity-40 mt-0.5">{client.subs}</p>
+        <p className="timecode text-[9px] opacity-70 mt-0.5">{client.subs}</p>
       </div>
     </div>
   );

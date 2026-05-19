@@ -279,11 +279,12 @@ body {
 .clients-track:hover { animation-play-state: paused; }
 
 .clients-card {
-  width: 110px;
+  width: 130px;
   padding: 20px 12px;
   border: 1px solid var(--border);
   background: var(--surface);
   cursor: default;
+  overflow: hidden;
   transition: border-color 0.3s, background 0.3s;
 }
 .clients-card:hover { border-color: var(--red); background: var(--bg); }
